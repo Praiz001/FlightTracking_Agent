@@ -109,4 +109,3 @@ const flightTrackerWorkflow = createWorkflow({
 flightTrackerWorkflow.commit();
 
 export { flightTrackerWorkflow };
-

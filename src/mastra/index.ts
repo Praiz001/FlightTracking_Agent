@@ -13,9 +13,9 @@ import { a2aAgentRoute } from './routes/a2a-agent-route';
 const { flightTrackerAgent } = agents;
 
 export const mastra = new Mastra({
-  workflows: { flightTrackerWorkflow },
+  // workflows: { flightTrackerWorkflow },
   agents: { flightTrackerAgent },
-  // scorers: { toolCallAppropriatenessScorer, completenessScorer, translationScorer },
+  // scorers: { },
   storage: new LibSQLStore({
     // stores observability, scores, ... into memory storage, if it needs to persist, change to file:../mastra.db
     url: ":memory:",
