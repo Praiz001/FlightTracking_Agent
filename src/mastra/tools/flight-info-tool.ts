@@ -5,6 +5,7 @@ export const flightInfoTool = createTool({
     id: 'get-flight-info',
     description: 'Fetch flight information by flight number from AeroDataBox',
     inputSchema: z.object({
+        
         flightNumber: z.string().describe('Flight Number'),
     }),
 
@@ -24,6 +25,7 @@ export const flightInfoTool = createTool({
     }),
     execute: async ({ context }) => {
         const { flightNumber } = context;
+        console.log('flightNumber context', flightNumber);
 
         const flightInfoUrl = `https://aero-data-box.p.rapidapi.com/flights/number/${encodeURIComponent(flightNumber)}`;
         const flightInfoResponse = await fetch(flightInfoUrl, {
