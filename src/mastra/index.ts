@@ -2,7 +2,7 @@
 import { Mastra } from '@mastra/core/mastra';
 import { PinoLogger } from '@mastra/loggers';
 import { LibSQLStore } from '@mastra/libsql';
-import { flightTrackerWorkflow } from './workflows/flight-tracker-workflow';
+// import { flightTrackerWorkflow } from './workflows/flight-tracker-workflow';
 import { agents } from './agents';
 import { a2aAgentRoute } from './routes/a2a-agent-route';
 
