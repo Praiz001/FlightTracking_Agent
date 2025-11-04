@@ -29,7 +29,7 @@ A Mastra-powered AI agent that provides real-time flight tracking information th
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone <https://github.com/Praiz001/FlightTracking_Agent>
 cd stage_3
 ```
 
