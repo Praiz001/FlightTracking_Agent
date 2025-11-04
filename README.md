@@ -4,23 +4,22 @@ A Mastra-powered AI agent that provides real-time flight tracking information th
 
 ## Features
 
-- 🤖 **AI-Powered Flight Tracking**: Natural language query processing for flight information
-- ✈️ **Real-Time Flight Data**: Integration with AeroDataBox API for live flight status
-- 💬 **Conversational Interface**: Human-friendly responses with conversational language
-- 🧠 **Memory Support**: Agent maintains conversation context using LibSQL storage
-- 🛠️ **Tool Integration**: Custom tool for fetching flight information
-- 📡 **JSON-RPC API**: A2A (Agent-to-Agent) compatible endpoint for integration
+- **AI-Powered Flight Tracking**: Natural language query processing for flight information.
+- **Real-Time Flight Data**: Integration with AeroDataBox API for live flight status.
+- **Conversational Interface**: Human-friendly responses with conversational language.
+- **Memory Support**: Agent maintains conversation context.
+- **Tool Integration**: Custom tool for fetching flight information.
+- **JSON-RPC API**: A2A (Agent-to-Agent) compatible endpoint for integration.
 
 ## Tech Stack
 
 - **Framework**: [Mastra](https://mastra.ai) - AI agent framework
 - **Language**: TypeScript
 - **AI Model**: OpenAI GPT-4o-mini
-- **Database**: LibSQL (SQLite)
 - **Validation**: Zod
-- **Logging**: Pino
 
 ## Prerequisites
+
 - Node.js >= 20.9.0
 - npm or yarn
 - OpenAI API key
@@ -44,15 +43,6 @@ Create a `.env` file in the root directory:
 OPENAI_API_KEY=your_openai_api_key
 RAPID_API_KEY=your_rapidapi_key
 ```
-
-## Configuration
-
-The application uses Mastra framework with the following configuration:
-
-- **Storage**: LibSQL database (file: `../mastra.db`)
-- **Logging**: Pino logger (info level)
-- **Observability**: Default exporter enabled
-- **API Docs**: OpenAPI and Swagger UI enabled
 
 ## Usage
 
@@ -100,6 +90,7 @@ Sends a message to the specified agent and returns a response.
   }
 }
 ```
+
 **Response Format:**
 ```json
 {
@@ -130,8 +121,17 @@ Sends a message to the specified agent and returns a response.
 }
 ```
 
-**Error Codes:**
-- `-32700`: Parse error (Invalid JSON)
-- `-32600`: Invalid Request (jsonrpc must be "2.0" and id is required)
-- `-32602`: Agent not found
-- `-32603`: Internal error
+## Development
+
+### Adding New Agents
+
+1. Create agent file in `src/mastra/agents/`
+2. Export from `src/mastra/agents/index.ts`
+3. Register in `src/mastra/index.ts`
+
+### Adding New Agents
+
+1. Create tool file in `src/mastra/tools/`
+2. Define input `/output schemas using Zod`
+3. Export from `src/mastra/tools/index.ts`
+4. Add tool to agent's tools array
