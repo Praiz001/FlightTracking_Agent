@@ -2,20 +2,22 @@
 import { Mastra } from '@mastra/core/mastra';
 import { PinoLogger } from '@mastra/loggers';
 import { LibSQLStore } from '@mastra/libsql';
-// import { flightTrackerWorkflow } from './workflows/flight-tracker-workflow';
+import { workflows } from './workflows';
 import { agents } from './agents';
 import { a2aAgentRoute } from './routes/a2a-agent-route';
 
 
-
-
-
-const { flightTrackerAgent } = agents;
+const { flightTrackerAgent, flightDataRetrieverAgent, promptParserAgent, flightSummaryAgent } = agents; //agents
+const { flightTrackerWorkflow } = workflows; //workflows
 
 export const mastra = new Mastra({
-  // workflows: { flightTrackerWorkflow },
-  agents: { flightTrackerAgent },
-  // scorers: { },
+  workflows: { flightTrackerWorkflow },
+  agents: {
+    flightTrackerAgent, //serving to a2a route
+    promptParserAgent,
+    flightSummaryAgent,
+    flightDataRetrieverAgent 
+  },
   storage: new LibSQLStore({
     url: "file:../mastra.db",
   }),
