@@ -30,38 +30,24 @@ export const flightInfoTool = createTool({
         const flight = flightData[0]; //grab first flight
         console.log('flight data', flight);
 
-
         return {
             airline: flight.airline?.name,
             status: flight.status,
             aircraft: flight.aircraft?.model,
-            lastUpdated: flight?.lastUpdatedUtc,
+            lastUpdated: flight?.lastUpdatedUtc 
+                ? new Date(flight.lastUpdatedUtc).toLocaleString() 
+                : undefined,
             //departure
             departureCity: flight.departure?.airport?.city?.name,
             departureAirport: flight.departure?.airport?.name,
-            departureScheduled: flight.departure?.scheduledTime?.utc,
-            departureActual: flight.departure?.actualTimeUtc,
+            departureScheduled: flight.departure?.scheduledTime?.local,
             //arrival
             arrivalCity: flight.arrival?.airport?.city?.name,
             arrivalAirport: flight.arrival?.airport?.name,
-            arrivalScheduledAt: flight.arrival?.scheduledTime?.utc,
-            arrivalEstimatedAt: flight.arrival?.predictedTime?.utc,
+            arrivalScheduledAt: flight.arrival?.scheduledTime?.local,
+            arrivalEstimatedAt: flight.arrival?.predictedTime?.local,
             arrivalTerminal: flight.arrival?.terminal,
             arrivalGate: flight.arrival?.gate,
         };
     },
 });
-
-
-// airline: flight.airline?.name || null,
-// status: flight.status || null,
-// departure: flight.departure?.airport?.name || null,
-// arrival: flight.arrival?.airport?.name || null,
-// scheduledDeparture: flight.departure?.scheduledTime?.utc || null,
-// actualDeparture: flight.departure?.actualTimeUtc || null,
-// scheduledArrival: flight.arrival?.scheduledTime?.utc || null,
-// estimatedArrival: flight.arrival?.predictedTime?.utc || null,
-// arrivalTerminal: flight.arrival?.terminal || null,
-// arrivalGate: flight.arrival?.gate || null,
-// aircraft: flight.aircraft?.model || null,
-// lastUpdated: flight?.lastUpdatedUtc || null,

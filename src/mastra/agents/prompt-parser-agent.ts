@@ -3,7 +3,6 @@ import { Memory } from '@mastra/memory';
 import { LibSQLStore } from '@mastra/libsql';
 
 
-
 export const promptParserAgent = new Agent({
   name: 'Prompt Parser Agent',
   description: 'Understands user messages and extracts intent and parameters for flight tracking.',

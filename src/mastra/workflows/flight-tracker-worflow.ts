@@ -60,15 +60,14 @@ const parseUserInput = createStep({
             throw new Error('Flight number not found in user message');
         }
 
-        console.log('parsedResponse workflow', parsedResponse);
         return parsedResponse;
     }
 });
 
-//step 2: uses the flight tracker agent to get the flight information
+//step 2: uses the flight tracker agent to get the flight information and formats reponse
 const trackFlight = createStep({
     id: 'track-flight',
-    description: 'Fetches flight data using Aerodatabox API',
+    description: 'Fetches flight data using Aerodatabox API and formats response',
     inputSchema: z.object({
         intent: z.string(),
         flightNumber: z.string().nullable(),
@@ -86,17 +85,31 @@ const trackFlight = createStep({
         if (!flightNumber)
             throw new Error('No flight number provided.');
 
-        const trackerAgent = mastra?.getAgent('flightTrackrAgent');
-        if (!trackerAgent) throw new Error('Tracker agent not found.');
+        const dataRetrieverAgent = mastra?.getAgent('flightDataRetrieverAgent');
+        if (!dataRetrieverAgent) throw new Error('Data retriever agent not found.');
 
         const prompt = `
             Here is the flight number: ${flightNumber}
             Track and provide the flight data as described in your instructions.
         `;
 
-        const response = await trackerAgent.generate(prompt, {
+        const response = await dataRetrieverAgent.generate(prompt, {
             structuredOutput: {
-                schema: flightDataSchema,
+                schema: z.object({
+                    airline: z.string(),
+                    status: z.string(),
+                    aircraft: z.string(),
+                    lastUpdated: z.string(),
+                    departureAirport: z.string(),
+                    departureScheduledAt: z.string(),
+                    departureCity: z.string(),
+                    arrivalAirport: z.string(),
+                    arrivalScheduledAt: z.string(),
+                    arrivalEstimatedAt: z.string(),
+                    arrivalTerminal: z.string(),
+                    arrivalGate: z.string(),
+                    arrivalCity: z.string(),
+                }),
             },
             memory: {
                 thread: `flight-query-${flightNumber}`,
@@ -105,11 +118,9 @@ const trackFlight = createStep({
         });
 
         const flightDataRes = response.object;
-        console.log('flightDataRes workflow', flightDataRes);
 
         return flightDataRes;
     },
-
 });
 
 //step 3: generate natural summary
@@ -142,7 +153,6 @@ const summarizeFlightData = createStep({
 
         // random tone for the summary
         const tone = tonePrompts[Math.floor(Math.random() * tonePrompts.length)];
-        console.log('tone', tone);
 
         const prompt = `
             Here is the flight data: ${JSON.stringify(flightData)}
@@ -150,9 +160,6 @@ const summarizeFlightData = createStep({
             Generate a summary of the flight data and destination weather with the following tone: ${tone},
             and as described in your instructions.
         `;
-
-        // const response = await summaryAgent.generate(prompt);
-        // return { summary: response.text || null };
 
         const response = await summaryAgent.stream([
             {
@@ -167,7 +174,6 @@ const summarizeFlightData = createStep({
             process.stdout.write(chunk);
             summaryText += chunk;
         }
-        console.log('summaryText workflow', summaryText);
 
         return {
             summary: summaryText,
@@ -187,6 +193,7 @@ const flightTrackerWorkflow = createWorkflow({
     .then(parseUserInput)
     .then(trackFlight)
     .then(summarizeFlightData)
-    .commit();
+
+flightTrackerWorkflow.commit();
 
 export { flightTrackerWorkflow };

@@ -8,7 +8,6 @@ const flightDataSchema = z.object({
     //departure
     departureAirport: z.string().optional(),
     departureScheduledAt: z.string().optional(),
-    departureActualAt: z.string().optional(),
     departureCity: z.string().optional(),
     //arrival
     arrivalAirport: z.string().optional(),

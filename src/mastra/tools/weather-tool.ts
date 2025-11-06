@@ -1,25 +1,6 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
 
-interface GeocodingResponse {
-    results: {
-        latitude: number;
-        longitude: number;
-        name: string;
-    }[];
-}
-interface WeatherResponse {
-    current: {
-        time: string;
-        temperature_2m: number;
-        apparent_temperature: number;
-        relative_humidity_2m: number;
-        wind_speed_10m: number;
-        wind_gusts_10m: number;
-        weather_code: number;
-    };
-}
-
 export const weatherTool = createTool({
     id: 'get-weather',
     description: 'Get current weather for a location',
@@ -56,8 +37,6 @@ export const getWeather = async (location: string) => {
     const response = await fetch(weatherUrl);
     const data = (await response.json()) as WeatherResponse;
 
-    console.log('weather data', data);
-
     return {
         temperature: data.current.temperature_2m,
         feelsLike: data.current.apparent_temperature,
@@ -67,6 +46,7 @@ export const getWeather = async (location: string) => {
         conditions: getWeatherCondition(data.current.weather_code),
         location: name,
     };
+                                                                 
 };
 
 function getWeatherCondition(code: number): string {
@@ -101,4 +81,23 @@ function getWeatherCondition(code: number): string {
         99: 'Thunderstorm with heavy hail',
     };
     return conditions[code] || 'Unknown';
+}
+
+interface GeocodingResponse {
+    results: {
+        latitude: number;
+        longitude: number;
+        name: string;
+    }[];
+}
+interface WeatherResponse {
+    current: {
+        time: string;
+        temperature_2m: number;
+        apparent_temperature: number;
+        relative_humidity_2m: number;
+        wind_speed_10m: number;
+        wind_gusts_10m: number;
+        weather_code: number;
+    };
 }

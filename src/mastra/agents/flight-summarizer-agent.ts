@@ -1,4 +1,8 @@
 import { Agent } from '@mastra/core';
+import { tools } from '../tools';
+
+ 
+const { weatherTool } = tools;
 
 export const flightSummaryAgent = new Agent({
     name: 'Flight Summary Agent',
@@ -32,7 +36,8 @@ export const flightSummaryAgent = new Agent({
     If flight data is missing or incomplete, acknowledge it politely.
     Avoid robotic phrasing or repeating the same structure.
     Use emoji for light personality but stay concise.
-`,
+    `,
+    tools: { weatherTool },
     model: 'openai/gpt-4o-mini',
     // scorers: {
     //     completeness: { scorer: scorers.completenessScorer, sampling: { type: 'ratio', rate: 1 } },
